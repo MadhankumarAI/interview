@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Detection App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h1>Face Detection & Confidence Tracker</h1>
+
+    <div class="video-container">
+        <img id="video-feed" src="/video_feed" alt="Video Feed">
+    </div>
+
+    <button id="toggle-camera-btn">Start Camera</button>
+    <button id="end-meeting-btn" class="end-meeting">End Meeting</button>
+</div>
+
+<script>
+    const toggleCameraBtn = document.getElementById('toggle-camera-btn');
+    const endMeetingBtn = document.getElementById('end-meeting-btn');
+    const videoFeed = document.getElementById('video-feed');
+
+    let isCameraOn = false;
+
+    toggleCameraBtn.addEventListener('click', () => {
+        fetch('/toggle_camera')
+            .then(response => response.text())
+            .then(data => {
+                if (data.includes("started")) {
+                    toggleCameraBtn.textContent = 'Stop Camera';
+                    isCameraOn = true;
+                    videoFeed.style.display = 'block';
+                    videoFeed.src = "/video_feed";
+                } else {
+                    toggleCameraBtn.textContent = 'Start Camera';
+                    isCameraOn = false;
+                    videoFeed.style.display = 'none';
+                    videoFeed.src = "";
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+    endMeetingBtn.addEventListener('click', () => {
+        fetch('/end_meeting')
+            .then(() => {
+                window.location.href = "/end_meeting";
+            })
+            .catch(error => console.error("Error ending meeting:", error));
+    });
+</script>
+
+</body>
+</html>
