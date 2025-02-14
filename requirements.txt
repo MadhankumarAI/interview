@@ -1,5 +1,9 @@
-Flask==2.0.2
+Flask==2.0.1
 opencv-python-headless==4.5.5.62
 dlib==19.22.1
-deepface==0.0.1
+keras==2.8.0
+tensorflow==2.8.0
 numpy==1.24.0
+werkzeug==2.0.1
+
+deepface==0.0.75
