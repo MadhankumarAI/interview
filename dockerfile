@@ -14,11 +14,18 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
+# Set up virtual environment
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Copy requirements first for better caching
 COPY requirements.txt .
 
-# Install Python packages
+# Upgrade pip and setuptools before installing requirements
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy the rest of the application
 COPY . .
 
 # Railway specific environment variable
